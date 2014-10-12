@@ -30,7 +30,6 @@ Game.prototype.startGame = function () {
 };
 
 Game.prototype.mainLoop = function () {
-  var that = this;
   if (this.round === 40) {
     this.determineWinner();
     return;
@@ -40,13 +39,35 @@ Game.prototype.mainLoop = function () {
   this.activeCard = this.deck.shift();
   console.log('Round Number ' + this.round);
   this.printGameState();
+  this.getInput();
+};
 
+Game.prototype.getInput = function () {
+  var that = this;
   var promptMessage = 'Player ' + this.curr + ' enter column number';
   prompt.get([promptMessage], function (err, input) {
-    that.addToHand(parseInt(input[promptMessage], 10)); 
-    that.round += 1;
-    that.mainLoop();
+    var columnNumber = parseInt(input[promptMessage], 10);
+    if (!that.isValidInput(columnNumber)) {
+      console.log('That isnt a valid choice');
+      that.getInput();
+    } else {
+      that.addToHand(columnNumber);
+      that.round += 1;
+      that.mainLoop();
+    }
   });
+};
+
+Game.prototype.isValidInput = function (number) {
+  if (isNaN(number) || number < 0 || number > 4) {
+    return false;
+  }
+  var activePlayerHands = (this.curr === 1) ? this.p1Hands : this.p2Hands;
+  var minLength = _.min(activePlayerHands, function (hand) { return hand.length; }).length;
+  if (activePlayerHands[number].length !== minLength) {
+    return false;
+  }
+  return true;
 };
 
 Game.prototype.addToHand = function (column) {
