@@ -13,4 +13,4 @@ Install
 
 Running
 ==========
-$ node main.js
+$ node src/main.js
