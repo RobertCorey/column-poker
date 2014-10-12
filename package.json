@@ -1,0 +1,29 @@
+{
+  "name": "column-poker",
+  "version": "0.0.0",
+  "description": "A poker variation where players take turns drawing cards from a deck and adding them to a hand that runs in terminal.",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/RobertCorey/column-poker.git"
+  },
+  "keywords": [
+    "poker",
+    "terminal",
+    "game"
+  ],
+  "author": "Robert Corey",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/RobertCorey/column-poker/issues"
+  },
+  "dependencies": {
+    "lodash": "~2.4.1",
+    "hoyle": "~0.2.2",
+    "colors": "~1.0.3",
+    "prompt": "~0.2.14"
+  }
+}
