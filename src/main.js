@@ -88,12 +88,7 @@ Game.prototype.determineWinner = function () {
       p1WinCount += 1;
     }
   }
-
-  if (p1WinCount >= 3) {
-    console.log('Player 1 wins');
-  } else {
-    console.log('Player 2 wins');
-  }
+  console.log((p1WinCount >= 3) ? 'Player 1 wins' : 'Player 2 wins');
   console.log('Game Over');
 };
 
