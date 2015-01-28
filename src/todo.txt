@@ -1,0 +1,4 @@
+setup bot that just does random shit
+make it graphical
+
+maybe make a player object that abstracts away a.i versus human player

@@ -9,6 +9,7 @@ var Game = function () {
   this.printer = require('./printer');
   this.deck = _.shuffle(require('./deck'));
   this.hand = require('hoyle').Hand;
+  this.humanState = [true, false];
   this.round = 0;
 };
 
@@ -24,8 +25,6 @@ Game.prototype.startGame = function () {
       this.p2Hands.push([this.deck.shift()]);
     }
   }
-
-  
   this.mainLoop();
 };
 
@@ -39,23 +38,55 @@ Game.prototype.mainLoop = function () {
   this.activeCard = this.deck.shift();
   console.log('Round Number ' + this.round);
   this.printGameState();
-  this.getInput();
+  this.getMove();
 };
 
-Game.prototype.getInput = function () {
+Game.prototype.isHuman = function (playerID) {
+  return this.humanState[playerID - 1];
+};
+
+Game.prototype.getMove = function () {
+  if (this.isHuman(this.curr)) {
+    this.getHumanMove();
+  } else {
+    this.getAiMove();
+  }
+};
+
+
+Game.prototype.getHumanMove = function () {
   var that = this;
   var promptMessage = 'Player ' + this.curr + ' enter column number';
   prompt.get([promptMessage], function (err, input) {
     var columnNumber = parseInt(input[promptMessage], 10);
     if (!that.isValidInput(columnNumber)) {
       console.log('That isnt a valid choice');
-      that.getInput();
+      that.getMove();
     } else {
-      that.addToHand(columnNumber);
-      that.round += 1;
-      that.mainLoop();
+      that.makeMove(columnNumber);
     }
   });
+};
+//returns an array of legal column moves
+Game.prototype.getPossibleMoves = function () {
+  var arr = [];
+  for (var i = 0; i < 5; i++) {
+    if (this.isValidInput(i)) {
+      arr.push(i);
+    }
+  }
+  return arr;
+};
+
+Game.prototype.getAiMove = function () {
+  var moves = this.getPossibleMoves();
+  this.makeMove(_.sample(moves));
+};
+
+Game.prototype.makeMove = function (columnNumber) {
+  this.addToHand(columnNumber);
+  this.round += 1;
+  this.mainLoop();
 };
 
 Game.prototype.isValidInput = function (number) {
@@ -93,6 +124,7 @@ Game.prototype.determineWinner = function () {
 };
 
 Game.prototype.printGameState = function () {
+  console.log('\033[2J');
   this.printer.printHands(this.p1Hands, 'Player 1 Hands:');
   this.printer.printHands(this.p2Hands, 'Player 2 Hands:');
   console.log('current card is:', this.printer.printCard(this.activeCard));
