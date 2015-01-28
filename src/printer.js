@@ -1,8 +1,8 @@
 var Printer = function () {};
 
 Printer.prototype.printCard = function (card) {
-  var str = card + ' ';
-  switch (card[1]) {
+  var str = card.rank + card.suit + ' ';
+  switch (card.suit) {
     case 'h':
       return str.red;
     case 'd':
